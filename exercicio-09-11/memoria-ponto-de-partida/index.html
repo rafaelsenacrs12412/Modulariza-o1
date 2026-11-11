@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da memória</title>
+    <link rel="stylesheet" href="src/style.css">
+    <script type="module" src="src/main.js"></script>
+</head>
+
+<body>
+
+    <header class="topo">
+        <h1>Jogo da memória</h1>
+        <p class="subtitulo">Ache os pares no menor tempo</p>
+    </header>
+
+    <main class="jogo">
+
+        <div class="controles">
+            <p>
+                <label for="tema">Tema</label>
+                <select id="tema" class="campo-tema">
+                    <option value="comidas">Comidas</option>
+                    <option value="esportes">Esportes</option>
+                    <option value="animais">Animais</option>
+                </select>
+            </p>
+            <p>
+                <label for="nivel">Nível</label>
+                <select id="nivel" class="campo-nivel">
+                    <option value="6">Fácil (6 pares)</option>
+                    <option value="8" selected>Médio (8 pares)</option>
+                    <option value="12">Difícil (12 pares)</option>
+                </select>
+            </p>
+            <button type="button" class="botao botao-secundario botao-pausar">Pausar</button>
+        </div>
+
+        <div class="painel">
+            <p>Tempo <strong class="tempo">0:00</strong></p>
+            <p>Jogadas <strong class="jogadas">0</strong></p>
+            <p>Recorde <strong class="recorde">—</strong></p>
+            <button type="button" class="botao botao-recomecar">Recomeçar</button>
+        </div>
+
+        <div class="tabuleiro"></div>
+
+        <section class="fim escondida">
+            <h2>Você achou todos os pares!</h2>
+            <p>Tempo: <strong class="fim-tempo"></strong> · Jogadas: <strong class="fim-jogadas"></strong></p>
+            <p class="novo-recorde escondida">Novo recorde!</p>
+            <button type="button" class="botao botao-jogar-de-novo">Jogar de novo</button>
+        </section>
+
+        <section class="historico">
+            <h2>Últimas partidas</h2>
+            <p class="historico-vazio">Nenhuma partida terminada ainda.</p>
+            <ol class="lista-historico"></ol>
+        </section>
+
+    </main>
+
+</body>
+
+</html>

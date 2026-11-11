@@ -1,0 +1,322 @@
+/* ===========================================================
+   Jogo da memória — o CSS (pronto: a atividade é JavaScript)
+   =========================================================== */
+
+:root {
+    --cor-fundo: #f4f1fb;
+    --cor-cartao: #ffffff;
+    --cor-texto: #231d33;
+    --cor-suave: #6d6680;
+    --cor-borda: #e2dcef;
+    --cor-principal: #7048e8;
+    --cor-principal-escura: #5f3dc4;
+    --cor-par: #2b8a3e;
+    --cor-par-fundo: #ebfbee;
+    --cor-destaque: #f59f00;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--cor-fundo);
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--cor-texto);
+}
+
+.topo {
+    padding: 28px 20px;
+    background-color: var(--cor-principal);
+    color: #ffffff;
+    text-align: center;
+}
+
+.topo h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.subtitulo {
+    margin: 4px 0 0 0;
+    opacity: 0.85;
+}
+
+.jogo {
+    max-width: 520px;
+    margin: 28px auto;
+    padding: 0 16px;
+}
+
+.escondida {
+    display: none;
+}
+
+/* O tema, o nível e o botão de pausa */
+.controles {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.controles p {
+    margin: 0;
+}
+
+.controles label {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--cor-suave);
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.controles select {
+    padding: 10px 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    background-color: var(--cor-cartao);
+    color: var(--cor-texto);
+    font-size: 15px;
+}
+
+.botao.botao-secundario {
+    margin-left: auto;
+    border: 2px solid var(--cor-principal);
+    background-color: var(--cor-cartao);
+    color: var(--cor-principal);
+}
+
+.botao.botao-secundario:hover {
+    background-color: var(--cor-fundo);
+}
+
+/* O tempo, as jogadas, o recorde e o botão, numa linha */
+.painel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.painel p {
+    margin: 0;
+    color: var(--cor-suave);
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.painel strong {
+    display: block;
+    color: var(--cor-texto);
+    font-size: 22px;
+}
+
+.botao {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 999px;
+    background-color: var(--cor-principal);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.botao:hover {
+    background-color: var(--cor-principal-escura);
+}
+
+.botao:focus-visible,
+.carta:focus-visible {
+    outline: 3px solid var(--cor-destaque);
+    outline-offset: 3px;
+}
+
+
+/* -----------------------------------------------------------
+   O tabuleiro e as cartas (o mesmo 3D da Semana da Tecnologia)
+   ----------------------------------------------------------- */
+
+.tabuleiro {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.carta {
+    aspect-ratio: 1;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    perspective: 600px;
+}
+
+.carta-interno {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s ease;
+    transform-style: preserve-3d;
+}
+
+.carta.virada .carta-interno,
+.carta.encontrada .carta-interno {
+    transform: rotateY(180deg);
+}
+
+.carta-frente,
+.carta-verso {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    backface-visibility: hidden;
+}
+
+.carta-frente {
+    background-color: var(--cor-principal);
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.carta-verso {
+    border: 2px solid var(--cor-borda);
+    background-color: var(--cor-cartao);
+    font-size: 40px;
+    transform: rotateY(180deg);
+}
+
+.carta.encontrada .carta-verso {
+    border-color: var(--cor-par);
+    background-color: var(--cor-par-fundo);
+}
+
+.carta:disabled {
+    color: inherit;
+    opacity: 1;
+    cursor: default;
+}
+
+
+/* No nível difícil (24 cartas), seis colunas e símbolos menores */
+.tabuleiro.nivel-dificil {
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.tabuleiro.nivel-dificil .carta-verso {
+    font-size: 28px;
+}
+
+.tabuleiro.nivel-dificil .carta-frente {
+    font-size: 22px;
+}
+
+/* Pausado: as cartas ficam borradas e não recebem cliques */
+.tabuleiro {
+    transition: filter 0.3s ease;
+}
+
+.tabuleiro.pausado {
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+
+/* -----------------------------------------------------------
+   O fim da partida
+   ----------------------------------------------------------- */
+
+.fim {
+    margin-top: 24px;
+    padding: 24px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 16px;
+    background-color: var(--cor-cartao);
+    text-align: center;
+    animation: surgir 0.4s ease-out;
+}
+
+.fim h2 {
+    margin: 0 0 8px 0;
+}
+
+.novo-recorde {
+    display: inline-block;
+    margin: 4px 0 16px 0;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background-color: var(--cor-destaque);
+    font-weight: bold;
+}
+
+.novo-recorde.escondida {
+    display: none;
+}
+
+@keyframes surgir {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* -----------------------------------------------------------
+   O histórico
+   ----------------------------------------------------------- */
+
+.historico {
+    margin-top: 28px;
+    padding: 20px 24px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 16px;
+    background-color: var(--cor-cartao);
+}
+
+.historico h2 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+}
+
+.historico-vazio {
+    margin: 0;
+    color: var(--cor-suave);
+}
+
+.historico-vazio.escondida {
+    display: none;
+}
+
+.lista-historico {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.lista-historico li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.lista-historico li:last-child {
+    border-bottom: none;
+}
